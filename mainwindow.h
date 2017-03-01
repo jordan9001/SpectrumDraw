@@ -7,7 +7,11 @@
 #include <QAudioOutput>
 #include <QBuffer>
 #include <QDebug>
-#include "tonegenerator.h"
+#include <QVBoxLayout>
+#include "tonerow.h"
+#include "audioconstants.h"
+
+#define TONE_AREA_STYLE ""
 
 namespace Ui {
 class MainWindow;
@@ -23,10 +27,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    ToneGenerator* tg;
     QByteArray* gen;
     QBuffer* input;
     QAudioOutput* audio;
+    QVector<ToneRow*> controlrows;
+    QVBoxLayout* rowarea;
+    quint16 bpm;
+    quint16 beats;
+    quint16 tracks;
+
+    void addRows(quint16 rows);
+    void deleteRows();
+    void compileSound();
 
 private slots:
     void playTone();

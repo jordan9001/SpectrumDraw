@@ -14,9 +14,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    tonegenerator.cpp
+    tonegenerator.cpp \
+    tonerow.cpp
 
 HEADERS  += mainwindow.h \
-    tonegenerator.h
+    tonegenerator.h \
+    tonerow.h \
+    audioconstants.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    README.md
