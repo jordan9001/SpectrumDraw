@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     tonegenerator.cpp \
-    tonerow.cpp
+    tonerow.cpp \
+    spectrogram.cpp
 
 HEADERS  += mainwindow.h \
     tonegenerator.h \
     tonerow.h \
-    audioconstants.h
+    audioconstants.h \
+    spectrogram.h
 
 FORMS    += mainwindow.ui
 
