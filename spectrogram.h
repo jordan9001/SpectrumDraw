@@ -5,7 +5,10 @@
 #include <QPainter>
 #include <QVector>
 #include <QtMath>
+#include <QPaintEvent>
 #include "audioconstants.h"
+
+#include <QDebug>
 
 #define WIN_A0          0.42
 #define WIN_A1          0.50
@@ -31,7 +34,9 @@ protected:
 
 private:
     QVector<qreal>* dft(const QByteArray* buf, int start, int spectrum_size);
+    void getColor(QColor* c, qreal val);
     void cleanGram();
+
 
     QBrush brush;
     QPainter painter;

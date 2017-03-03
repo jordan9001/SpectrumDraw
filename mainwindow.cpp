@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->gen = new QByteArray();
     this->bpm = 256;
     this->beats = 8;
-    this->tracks = 8;
+    this->tracks = 4;
 
     // add tonerows to the ui, making our grid
     this->rowarea = new QVBoxLayout();
@@ -23,8 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ToneRowArea->setStyleSheet(TONE_AREA_STYLE);
 
     // add our spectrogram
-    gram = new Spectrogram(this);
-    ui->MainLayout->addWidget(gram);;
+    gram = new Spectrogram(0);
 
     connect(ui->PlayButton,SIGNAL(clicked()),this,SLOT(playTone()));
     connect(ui->StopButton,SIGNAL(clicked()),this,SLOT(stopPlaying()));
