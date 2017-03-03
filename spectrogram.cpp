@@ -52,7 +52,6 @@ void Spectrogram::paintEvent(QPaintEvent* event)
             qreal val = gram[i]->at(j);
             getColor(&c, val);
             brush.setColor(c);
-            qDebug() << c.redF() << " " << c.greenF() << " " << c.blueF();
             painter.fillRect(QRectF(x,y,w,h), brush);
         }
     }
@@ -103,11 +102,10 @@ QVector<qreal>* Spectrogram::dft(const QByteArray *buf, int start, int spectrum_
 
 void Spectrogram::getColor(QColor* c, qreal val) {
     // get a color based on the value
-    // logrithmically I guess?
     // I need to start seeing color at 1 * 10^-4
-    c->setBlueF(val *  10000);
-    c->setGreenF(val * 1000);
-    c->setRedF(val * 100);
+    c->setRedF(val *  7500);
+    c->setGreenF(val * 4500);
+    c->setBlueF(val * 1000);
 }
 
 void Spectrogram::cleanGram() {

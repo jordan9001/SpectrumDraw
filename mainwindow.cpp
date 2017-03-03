@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->gen = new QByteArray();
     this->bpm = 256;
     this->beats = 8;
-    this->tracks = 4;
+    this->tracks = 8;
 
     // add tonerows to the ui, making our grid
     this->rowarea = new QVBoxLayout();
