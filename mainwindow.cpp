@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->audio = NULL;
     this->gen = new QByteArray();
     this->bpm = 256;
-    this->beats = 64;
+    this->beats = 8;
     this->tracks = 8;
 
     // add tonerows to the ui, making our grid
@@ -22,12 +22,18 @@ MainWindow::MainWindow(QWidget *parent) :
     // set the style on the area
     ui->ToneRowArea->setStyleSheet(TONE_AREA_STYLE);
 
+    // add our spectrogram
+    gram = new Spectrogram(this);
+    ui->MainLayout->addWidget(gram);;
+
     connect(ui->PlayButton,SIGNAL(clicked()),this,SLOT(playTone()));
     connect(ui->StopButton,SIGNAL(clicked()),this,SLOT(stopPlaying()));
+    connect(ui->GraphButton,SIGNAL(clicked()),this,SLOT(drawGraph()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete this->gram;
     this->deleteRows();
     delete this->rowarea;
     delete ui;
@@ -59,6 +65,12 @@ void MainWindow::playTone()
 
     input->open(QIODevice::ReadOnly);
     audio->start(input);
+}
+
+void MainWindow::drawGraph()
+{
+    this->compileSound();
+    this->gram->drawGram(this->gen, this->bpm);
 }
 
 void MainWindow::stopPlaying()
@@ -114,6 +126,7 @@ void MainWindow::deleteRows()
 
 void MainWindow::compileSound()
 {
+    //TODO check if it has changed
     // zero gen
     gen->resize(this->beats * 60 * SPD_SAMPLE_RATE / this->bpm);
     gen->fill(0);

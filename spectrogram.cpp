@@ -1,13 +1,42 @@
 #include "spectrogram.h"
 
-Spectrogram::Spectrogram(QWidget *parent) : QWidget(parent)
+Spectrogram::Spectrogram(QWidget* parent) : QWidget(parent)
 {
-
+    // set up our brushes
+    brush = QBrush(QColor(0,0,0,255));
 }
 
 Spectrogram::~Spectrogram()
 {
+    cleanGram();
+}
 
+void Spectrogram::drawGram(const QByteArray* buf, quint16 bpm)
+{
+    cleanGram();
+    // split the thing up based on bpm and frequency
+    // fill gram with the dfts
+    int size = 60 * SPD_SAMPLE_RATE / bpm;
+    int length = buf->size() / size;
+    for (int i=0; i < length; i++) {
+        QVector<qreal>* ft = dft(buf, i*size, size);
+        gram.push_back(ft);
+    }
+    // call update, to get a paint event
+    this->update();
+}
+
+void Spectrogram::paintEvent(QPaintEvent *event)
+{
+    // Set up the painter
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    // paint the spectrogram
+    painter.setBrush(brush);
+
+    painter.fillRect(QRectF(0,0,10,20),brush);
+
+    painter.end();
 }
 
 QVector<qreal>* Spectrogram::dft(const QByteArray *buf, int start, int spectrum_size)
@@ -49,4 +78,11 @@ QVector<qreal>* Spectrogram::dft(const QByteArray *buf, int start, int spectrum_
         (*dataOut)[k] = (rePart[k] * rePart[k]) + (imPart[k] * imPart[k]);
     }
     return dataOut;
+}
+
+void Spectrogram::cleanGram() {
+    for (int i=0; i < gram.size(); i++) {
+        delete gram[i];
+    }
+    gram.resize(0);
 }

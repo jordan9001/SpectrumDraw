@@ -43,14 +43,19 @@ ToneRow::~ToneRow()
 QByteArray* ToneRow::generateTrack(QByteArray *buf, quint16 bpm, quint16 tracks)
 {
     int start = 0;
+    int len = this->chkBoxVec.size();
     //loop through the on areas
-    for (int i=0; i<this->chkBoxVec.size(); i++) {
-        if (!this->chkBoxVec[i]->isChecked() && start != -1) {
-            this->instrument->makeTone(buf, bpm, start, i - start, tracks);
-            start = -1;
-        }
+    for (int i=0; i<len; i++) {
         if (this->chkBoxVec[i]->isChecked() && start == -1) {
             start = i;
+        }
+        if (start != -1 && (!this->chkBoxVec[i]->isChecked() || i==len-1)) {
+            int end = i - start;
+            if (i==len-1 && this->chkBoxVec[i]->isChecked()) {
+                end = len - start;
+            }
+            this->instrument->makeTone(buf, bpm, start, end, tracks);
+            start = -1;
         }
     }
     return buf;

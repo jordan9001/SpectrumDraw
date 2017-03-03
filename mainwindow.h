@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 #include "tonerow.h"
 #include "audioconstants.h"
+#include "spectrogram.h"
 
 #define TONE_AREA_STYLE ""
 
@@ -32,6 +33,7 @@ private:
     QAudioOutput* audio;
     QVector<ToneRow*> controlrows;
     QVBoxLayout* rowarea;
+    Spectrogram* gram;
     quint16 bpm;
     quint16 beats;
     quint16 tracks;
@@ -44,6 +46,7 @@ private slots:
     void playTone();
     void stopPlaying();
     void handleStateChanged(QAudio::State newState);
+    void drawGraph();
 };
 
 #endif // MAINWINDOW_H
