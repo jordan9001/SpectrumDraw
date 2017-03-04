@@ -13,13 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->tracks = 5;
 
     // add tonerows to the ui, making our grid
-    this->rowarea = new QVBoxLayout();
-    this->rowarea->setSpacing(0);
-    this->rowarea->setMargin(0);
     this->addRows(this->tracks);
     ui->ToneRowArea->setLayout(this->rowarea);
-
-    // set the style on the area
     ui->ToneRowArea->setStyleSheet(TONE_AREA_STYLE);
 
     // add our spectrogram
@@ -108,6 +103,11 @@ void MainWindow::handleStateChanged(QAudio::State newState)
 
 void MainWindow::addRows(quint16 rows)
 {
+    this->rowarea = new QVBoxLayout();
+    this->rowarea->setSpacing(0);
+    this->rowarea->setMargin(0);
+    this->rowarea->setContentsMargins(0,0,0,0);
+    this->rowarea->setAlignment(Qt::AlignTop);
     this->controlrows = QVector<ToneRow*>(rows);
     for (quint16 i=0; i<rows; i++) {
         ToneRow* t = new ToneRow(this, this->beats);

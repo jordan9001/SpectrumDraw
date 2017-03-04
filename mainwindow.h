@@ -11,8 +11,7 @@
 #include "tonerow.h"
 #include "audioconstants.h"
 #include "spectrogram.h"
-
-#define TONE_AREA_STYLE ""
+#include "styles.h"
 
 namespace Ui {
 class MainWindow;

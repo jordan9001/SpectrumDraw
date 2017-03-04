@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
-#include <QComboBox>
+#include <QLabel>
 #include <QCheckBox>
 #include "tonegenerator.h"
 
@@ -13,7 +13,7 @@ class ToneRow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ToneRow(QWidget* parent = 0, quint16 length = 64);
+    explicit ToneRow(QWidget* parent = 0, quint16 length = 64, QString note = "A3", qreal frequency = 220.00);
     ~ToneRow();
 
     QByteArray* generateTrack(QByteArray* buf, quint16 bpm, quint16 tracks);
@@ -22,11 +22,11 @@ public:
 signals:
 
 public slots:
-    void changeNote(int);
 
 private:
     QHBoxLayout* rowlayout;
-    QComboBox* noteCombo;
+    QLabel* note;
+    qreal frequency;
     QVector<QCheckBox*> chkBoxVec;
     ToneGenerator* instrument;
 };

@@ -1,18 +1,13 @@
 #include "tonerow.h"
 
-ToneRow::ToneRow(QWidget* parent, quint16 length) : QWidget(parent)
+ToneRow::ToneRow(QWidget* parent, quint16 length, QString note, qreal frequency) : QWidget(parent)
 {
     // make our layout
     this->rowlayout = new QHBoxLayout();
-    // add the combobox
-    this->noteCombo = new QComboBox();
-    this->noteCombo->addItem("A3", 220.00);
-    this->noteCombo->addItem("C4", 261.63);
-    this->noteCombo->addItem("E4", 329.63);
-    this->noteCombo->addItem("G4", 392.00);
-    this->noteCombo->addItem("A4", 440.00);
-    this->noteCombo->addItem("C5", 523.25);
-    this->rowlayout->addWidget(this->noteCombo);
+    this->frequency = frequency;
+    // add the label
+    this->note = new QLabel(note);
+    this->rowlayout->addWidget(this->note);
 
     // add the length of qcheckboxes
     this->chkBoxVec = QVector<QCheckBox*>(length);
@@ -23,11 +18,13 @@ ToneRow::ToneRow(QWidget* parent, quint16 length) : QWidget(parent)
         this->rowlayout->addWidget(box);
     }
 
+    this->rowlayout->setSpacing(4);
+    this->rowlayout->setMargin(0);
+    this->rowlayout->setContentsMargins(0,0,0,0);
+    this->rowlayout->setAlignment(Qt::AlignLeft);
     this->setLayout(this->rowlayout);
 
     this->instrument = new ToneGenerator();
-
-    connect(this->noteCombo,SIGNAL(currentIndexChanged(int)),this,SLOT(changeNote(int)));
 }
 
 ToneRow::~ToneRow()
@@ -36,7 +33,7 @@ ToneRow::~ToneRow()
     for (int i=0; i<this->chkBoxVec.size(); i++) {
         delete this->chkBoxVec[i];
     }
-    delete this->noteCombo;
+    delete this->note;
     delete this->rowlayout;
 }
 
@@ -61,14 +58,8 @@ QByteArray* ToneRow::generateTrack(QByteArray *buf, quint16 bpm, quint16 tracks)
     return buf;
 }
 
-void ToneRow::changeNote(int)
-{
-    qreal value = this->noteCombo->currentData().toReal();
-    this->instrument->setNewFreq(value);
-}
-
 qreal ToneRow::getFreq()
 {
-    return this->noteCombo->currentData().toReal();
+    return this->frequency;
 }
 
