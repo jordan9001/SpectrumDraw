@@ -48,7 +48,6 @@ void Spectrogram::paintEvent(QPaintEvent* event)
 
     for (int i=0; i<gram.size(); i++) {
         qreal x = i * w;
-        qDebug() << gram[i]->size();
         for (int k=0; k<gram[i]->size(); k++) {
             qreal y = (hcount - k - 1) * h;
             qreal val = gram[i]->at(k);

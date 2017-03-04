@@ -8,9 +8,9 @@
 #include <QBuffer>
 #include <QDebug>
 #include <QVBoxLayout>
-#include "tonerow.h"
 #include "audioconstants.h"
 #include "spectrogram.h"
+#include "tonegrid.h"
 #include "styles.h"
 
 namespace Ui {
@@ -27,20 +27,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QByteArray* gen;
     QBuffer* input;
     QAudioOutput* audio;
-    QVector<ToneRow*> controlrows;
-    QVBoxLayout* rowarea;
     Spectrogram* gram;
     quint16 bpm;
     quint16 beats;
-    quint16 tracks;
-
-    void addRows(quint16 rows);
-    void deleteRows();
-    void compileSound();
-    qreal highestNote();
+    ToneGrid* tonegrid;
 
 private slots:
     void playTone();

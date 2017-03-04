@@ -7,5 +7,6 @@
 #define TONE_AREA_STYLE "   \
 QCheckBox {                 \
     padding: 0px;           \
+    spacing: 5px;          \
 }                           \
 "

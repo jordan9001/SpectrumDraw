@@ -7,15 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->audio = NULL;
-    this->gen = new QByteArray();
     this->bpm = 256;
-    this->beats = 32;
-    this->tracks = 5;
+    this->beats = 64;
 
-    // add tonerows to the ui, making our grid
-    this->addRows(this->tracks);
-    ui->ToneRowArea->setLayout(this->rowarea);
-    ui->ToneRowArea->setStyleSheet(TONE_AREA_STYLE);
+    // add out tone grid
+    this->tonegrid = new ToneGrid(this, this->beats);
+    ui->ToneScrollArea->setWidget(this->tonegrid);
+    ui->ToneScrollArea->setStyleSheet(TONE_AREA_STYLE);
 
     // add our spectrogram
     gram = new Spectrogram(0);
@@ -28,17 +26,17 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete this->gram;
-    this->deleteRows();
-    delete this->rowarea;
+    delete this->tonegrid;
     delete ui;
 }
 
 void MainWindow::playTone()
 {
     // get the combined output
-    this->compileSound();
+    QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
     // get the QByte array from tone generator
-    input = new QBuffer(this->gen);
+    input = new QBuffer();
+    input->setData(*gen);
 
     QAudioFormat format;
     format.setSampleRate(SPD_SAMPLE_RATE);
@@ -63,8 +61,8 @@ void MainWindow::playTone()
 
 void MainWindow::drawGraph()
 {
-    this->compileSound();
-    this->gram->drawGram(this->gen, this->bpm, this->highestNote());
+    QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
+    this->gram->drawGram(gen, this->bpm, this->tonegrid->getHighestUsedNote());
 }
 
 void MainWindow::stopPlaying()
@@ -99,50 +97,4 @@ void MainWindow::handleStateChanged(QAudio::State newState)
             // ... other cases as appropriate
             break;
     }
-}
-
-void MainWindow::addRows(quint16 rows)
-{
-    this->rowarea = new QVBoxLayout();
-    this->rowarea->setSpacing(0);
-    this->rowarea->setMargin(0);
-    this->rowarea->setContentsMargins(0,0,0,0);
-    this->rowarea->setAlignment(Qt::AlignTop);
-    this->controlrows = QVector<ToneRow*>(rows);
-    for (quint16 i=0; i<rows; i++) {
-        ToneRow* t = new ToneRow(this, this->beats);
-        this->controlrows[i] = t;
-        this->rowarea->addWidget(t);
-    }
-}
-
-void MainWindow::deleteRows()
-{
-    for (int i=0; i<this->controlrows.size(); i++) {
-        delete this->controlrows[i];
-    }
-}
-
-void MainWindow::compileSound()
-{
-    //TODO check if it has changed
-    // zero gen
-    gen->resize(this->beats * 60 * SPD_SAMPLE_RATE / this->bpm);
-    gen->fill(0);
-
-    //loop over rows, adding our amount to gen
-    for (int i=0; i<this->controlrows.size(); i++) {
-        controlrows[i]->generateTrack(gen, this->bpm, this->tracks);
-    }
-}
-
-qreal MainWindow::highestNote()
-{
-    qreal highest = DEFAULT_HIGHEST;
-    for (quint16 i=0; i<this->controlrows.size(); i++) {
-        if (this->controlrows[i]->getFreq() > highest) {
-            highest = this->controlrows[i]->getFreq();
-        }
-    }
-    return highest;
 }

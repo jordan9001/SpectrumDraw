@@ -10,7 +10,7 @@ ToneGenerator::~ToneGenerator()
 
 }
 
-QByteArray* ToneGenerator::makeTone(QByteArray* buf, quint16 bpm, quint16 beat_index, quint16 beat_count, quint16 tracks)
+QByteArray* ToneGenerator::makeTone(QByteArray* buf, quint16 bpm, quint16 beat_index, quint16 beat_end, quint16 tracks)
 {
     // sin(2 Pi Hz t)
     // sin(2 Pi Hz i / sample_rate)
@@ -20,7 +20,7 @@ QByteArray* ToneGenerator::makeTone(QByteArray* buf, quint16 bpm, quint16 beat_i
 
     // samples = beats * (min/beat) * (sec/min) * (samples/sec)
     start = beat_index * 60 * SPD_SAMPLE_RATE / bpm;
-    end = start + beat_count * 60 * SPD_SAMPLE_RATE / bpm;
+    end = beat_end * 60 * SPD_SAMPLE_RATE / bpm;
 
     // make sure we have the size
     if (buf->size() < end) {
@@ -48,3 +48,7 @@ void ToneGenerator::setNewFreq(qreal newfreq) {
     this->freq = newfreq;
 }
 
+qreal ToneGenerator::getFreq()
+{
+    return this->freq;
+}

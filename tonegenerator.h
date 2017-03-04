@@ -13,7 +13,8 @@ public:
     ~ToneGenerator();
 
     void setNewFreq(qreal newfreq);
-    QByteArray* makeTone(QByteArray* buf, quint16 bpm, quint16 beat_index, quint16 beat_count, quint16 tracks);
+    QByteArray* makeTone(QByteArray* buf, quint16 bpm, quint16 beat_index, quint16 beat_end, quint16 tracks);
+    qreal getFreq();
 
 private:
     qreal freq;
