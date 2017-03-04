@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->audio = NULL;
     this->gen = new QByteArray();
     this->bpm = 256;
-    this->beats = 8;
-    this->tracks = 8;
+    this->beats = 32;
+    this->tracks = 5;
 
     // add tonerows to the ui, making our grid
     this->rowarea = new QVBoxLayout();
@@ -69,7 +69,7 @@ void MainWindow::playTone()
 void MainWindow::drawGraph()
 {
     this->compileSound();
-    this->gram->drawGram(this->gen, this->bpm);
+    this->gram->drawGram(this->gen, this->bpm, this->highestNote());
 }
 
 void MainWindow::stopPlaying()
@@ -134,4 +134,15 @@ void MainWindow::compileSound()
     for (int i=0; i<this->controlrows.size(); i++) {
         controlrows[i]->generateTrack(gen, this->bpm, this->tracks);
     }
+}
+
+qreal MainWindow::highestNote()
+{
+    qreal highest = DEFAULT_HIGHEST;
+    for (quint16 i=0; i<this->controlrows.size(); i++) {
+        if (this->controlrows[i]->getFreq() > highest) {
+            highest = this->controlrows[i]->getFreq();
+        }
+    }
+    return highest;
 }

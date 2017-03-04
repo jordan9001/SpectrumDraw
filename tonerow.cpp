@@ -67,3 +67,8 @@ void ToneRow::changeNote(int)
     this->instrument->setNewFreq(value);
 }
 
+qreal ToneRow::getFreq()
+{
+    return this->noteCombo->currentData().toReal();
+}
+

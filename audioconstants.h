@@ -6,6 +6,7 @@
 #define SPD_SAMPLE_SIZE  8
 #define SPD_CODEC        "audio/pcm"
 #define SPD_MAX_VAL      126
+#define SPD_MAX_SPECTRUM 800
 
 #endif // AUDIOCONSTANTS
 

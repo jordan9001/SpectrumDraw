@@ -7,6 +7,8 @@
 #include <QCheckBox>
 #include "tonegenerator.h"
 
+#define DEFAULT_HIGHEST 200;
+
 class ToneRow : public QWidget
 {
     Q_OBJECT
@@ -15,6 +17,7 @@ public:
     ~ToneRow();
 
     QByteArray* generateTrack(QByteArray* buf, quint16 bpm, quint16 tracks);
+    qreal getFreq();
 
 signals:
 

@@ -15,6 +15,7 @@
 #define WIN_A2          0.08
 #define WIN_C1          (2.0 * M_PI)
 #define WIN_C2          (4.0 * M_PI)
+#define CAPF(X)         ((X<1.0)?X:1.0)
 
 class Spectrogram : public QWidget
 {
@@ -23,7 +24,7 @@ public:
     explicit Spectrogram(QWidget* parent = 0);
     ~Spectrogram();
 
-    void drawGram(const QByteArray* buf, quint16 bpm);
+    void drawGram(const QByteArray* buf, quint16 bpm, qreal highest_note);
 
 signals:
 
@@ -33,7 +34,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QVector<qreal>* dft(const QByteArray* buf, int start, int spectrum_size);
+    QVector<qreal>* dft(const QByteArray* buf, int start, int spectrum_size, qreal max_freq);
     void getColor(QColor* c, qreal val);
     void cleanGram();
 

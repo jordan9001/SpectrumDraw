@@ -41,6 +41,7 @@ private:
     void addRows(quint16 rows);
     void deleteRows();
     void compileSound();
+    qreal highestNote();
 
 private slots:
     void playTone();
