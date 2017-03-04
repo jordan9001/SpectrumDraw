@@ -78,7 +78,9 @@ void MainWindow::handleStateChanged(QAudio::State newState)
         case QAudio::IdleState:
             // Finished playing (no more data)
             qDebug() << "Done playing";
-            audio->stop();
+            if (audio) {
+                audio->stop();
+            }
             break;
 
         case QAudio::StoppedState:
