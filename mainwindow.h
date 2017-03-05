@@ -39,6 +39,8 @@ private slots:
     void stopPlaying();
     void handleStateChanged(QAudio::State newState);
     void drawGraph();
+    void clearGrid();
+    void saveSound();
 };
 
 #endif // MAINWINDOW_H

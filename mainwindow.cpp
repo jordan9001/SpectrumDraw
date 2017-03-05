@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->PlayButton,SIGNAL(clicked()),this,SLOT(playTone()));
     connect(ui->StopButton,SIGNAL(clicked()),this,SLOT(stopPlaying()));
     connect(ui->GraphButton,SIGNAL(clicked()),this,SLOT(drawGraph()));
+    connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearGrid()));
+    connect(ui->SaveButton,SIGNAL(clicked()),this,SLOT(saveSound()));
 }
 
 MainWindow::~MainWindow()
@@ -100,4 +102,14 @@ void MainWindow::handleStateChanged(QAudio::State newState)
             // ... other cases as appropriate
             break;
     }
+}
+
+void MainWindow::clearGrid()
+{
+    this->tonegrid->clearGrid();
+}
+
+void MainWindow::saveSound()
+{
+
 }

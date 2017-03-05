@@ -81,23 +81,28 @@ QByteArray* ToneGrid::generateTrack(quint16 bpm) {
     if (buf != NULL) {
         delete buf;
     }
-    buf = new QByteArray(row_len * 60 * SPD_SAMPLE_RATE / bpm, 0);
+    quint16 beatlen = getBeatLength();
+    buf = new QByteArray(beatlen * 60 * SPD_SAMPLE_RATE / bpm, 0);
 
     quint16 tracks_used = getUsedTrackCount();
 
     quint16 inst_i;
     qint32 start = -1;
     for (quint16 i=0; i<this->chkBoxVec.size(); i++) {
+        // don't handle empty columns
+        if ((i%row_len) >= beatlen) {
+            continue;
+        }
         if (this->chkBoxVec[i]->isChecked()) {
             if (start == -1) {
                 // start a new note
                 start = i % row_len;
             }
             // if we are at the end of a row
-            if (!((i+1) % row_len)) {
+            if (!(((i+1) % row_len)%beatlen)) {
                 // play the note
                 inst_i = i / row_len;
-                instrumentVec[inst_i]->makeTone(buf, bpm, start, (i%row_len)+1, tracks_used);
+                instrumentVec[inst_i]->makeTone(buf, bpm, start, ((i%row_len)%beatlen)+1, tracks_used);
                 start = -1;
             }
         } else if (start != -1) {
@@ -132,6 +137,24 @@ quint16 ToneGrid::getUsedTrackCount()
     return count;
 }
 
+quint16 ToneGrid::getBeatLength()
+{
+    for (quint16 i=key_len-1; i>=0; i--) {
+        if (isColUsed(i)) {
+            return i+1;
+        }
+    }
+    return 0;
+}
+
+void ToneGrid::clearGrid()
+{
+    this->dirty = true;
+    for (int i=0; i<chkBoxVec.size(); i++) {
+        chkBoxVec[i]->setChecked(false);
+    }
+}
+
 void ToneGrid::makeDirty()
 {
     this->dirty = true;
@@ -141,6 +164,17 @@ bool ToneGrid::isTrackUsed(quint16 index)
 {
     for (quint16 i=(index*row_len); i<((index+1)*row_len); i++) {
         if (chkBoxVec.at(i)->isChecked()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool ToneGrid::isColUsed(quint16 index)
+{
+    for (quint16 i=0; i<key_len; i++) {
+        quint16 j = (i*row_len) + index;
+        if (chkBoxVec.at(j)->isChecked()) {
             return true;
         }
     }

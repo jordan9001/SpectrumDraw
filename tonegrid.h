@@ -19,6 +19,8 @@ public:
     QByteArray* generateTrack(quint16 bpm);
     qreal getHighestUsedNote();
     quint16 getUsedTrackCount();
+    quint16 getBeatLength();
+    void clearGrid();
 
 signals:
 
@@ -37,6 +39,7 @@ private:
     bool dirty;
 
     bool isTrackUsed(quint16 index);
+    bool isColUsed(quint16 index);
 };
 
 #endif // TONEGRID_H
