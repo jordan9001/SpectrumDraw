@@ -109,9 +109,9 @@ QVector<qreal>* Spectrogram::dft(const QByteArray *buf, int start, int spectrum_
 void Spectrogram::getColor(QColor* c, qreal val) {
     // get a color based on the value
     // I need to start seeing color at 1 * 10^-4
-    c->setBlueF(CAPF(val *  4000));
-    c->setGreenF(CAPF(val * 3000));
-    c->setRedF(CAPF(val * 2000));
+    c->setBlueF(CAPF(val *  4500));
+    c->setGreenF(CAPF(val * 3900));
+    c->setRedF(CAPF(val * 2100));
 }
 
 void Spectrogram::cleanGram() {

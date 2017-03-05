@@ -32,6 +32,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::playTone()
 {
+    stopPlaying();
     // get the combined output
     QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
     // get the QByte array from tone generator
