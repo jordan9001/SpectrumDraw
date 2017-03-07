@@ -139,7 +139,7 @@ quint16 ToneGrid::getUsedTrackCount()
 
 quint16 ToneGrid::getBeatLength()
 {
-    for (quint16 i=key_len-1; i>=0; i--) {
+    for (quint16 i=row_len-1; i>=0; i--) {
         if (isColUsed(i)) {
             return i+1;
         }

@@ -15,14 +15,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     tonegenerator.cpp \
     spectrogram.cpp \
-    tonegrid.cpp
+    tonegrid.cpp \
+    wavoutputfile.cpp
 
 HEADERS  += mainwindow.h \
     tonegenerator.h \
     audioconstants.h \
     spectrogram.h \
     styles.h \
-    tonegrid.h
+    tonegrid.h \
+    wavoutputfile.h
 
 FORMS    += mainwindow.ui
 
