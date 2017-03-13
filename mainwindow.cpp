@@ -111,5 +111,15 @@ void MainWindow::clearGrid()
 
 void MainWindow::saveSound()
 {
-
+    QString fileName = QFileDialog::getSaveFileName(this, "Export Wav", "", "Wav Files (*.wav)");
+    WavOutputFile* out = new WavOutputFile(fileName);
+    QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
+    out->writeBuf(gen);
+    delete out;
 }
+
+
+
+
+
+

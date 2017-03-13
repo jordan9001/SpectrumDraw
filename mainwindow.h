@@ -8,10 +8,13 @@
 #include <QBuffer>
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QFileDialog>
 #include "audioconstants.h"
+#include "wavoutputfile.h"
 #include "spectrogram.h"
 #include "tonegrid.h"
 #include "styles.h"
+
 
 namespace Ui {
 class MainWindow;

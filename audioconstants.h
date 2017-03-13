@@ -8,6 +8,7 @@
 #define SPD_MAX_VAL         126
 #define SPD_MAX_SPECTRUM    800
 #define SPD_MIN_FREQ        200
+#define SPD_NUM_CHAN        1
 
 #include <QObject>
 

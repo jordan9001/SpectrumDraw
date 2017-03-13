@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QFile>
+#include <QDataStream>
+#include "audioconstants.h"
 
 class WavOutputFile : public QFile
 {
@@ -13,7 +15,7 @@ public:
     bool writeBuf(QByteArray* buf);
 
 private:
-    void writeHeader();
+    void writeHeader(int size);
 };
 
 #endif // WAVOUTPUTFILE_H
