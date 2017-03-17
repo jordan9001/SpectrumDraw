@@ -31,6 +31,9 @@ void Spectrogram::drawGram(const QByteArray* buf, quint16 bpm, qreal highest_not
 
 void Spectrogram::paintEvent(QPaintEvent* event)
 {
+    if (gram.size() == 0) {
+        return;
+    }
     // Set up the painter
     painter.begin(this);
     painter.setRenderHint(QPainter::Antialiasing);

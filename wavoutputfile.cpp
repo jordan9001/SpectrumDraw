@@ -18,7 +18,14 @@ bool WavOutputFile::writeBuf(QByteArray* buf)
 
     this->writeHeader(buf->size());
 
-    this->write(*buf);
+    // we can't just write it, because our buffer is signed bytes, we need to offset first
+    //this->write(*buf);
+    QByteArray cpy;
+    cpy.resize(buf->size());
+    for (int i=0; i<buf->size(); ++i) {
+        cpy[i] = (quint8)(buf->at(i) + SPD_MAX_VAL);
+    }
+    this->write(cpy);
 
     this->close();
     return true;

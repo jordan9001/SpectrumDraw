@@ -1,10 +1,10 @@
 #include "tonegrid.h"
 
-ToneGrid::ToneGrid(QWidget *parent, quint16 length, const note_t* inkey, quint16 insize) : QWidget(parent)
+ToneGrid::ToneGrid(QWidget *parent, quint16 length, quint16 notesize, qint16 startoffset) : QWidget(parent)
 {
     this->dirty = true;
-    this->key = inkey;
-    this->key_len = insize;
+    this->key = genNotes(notesize, startoffset);
+    this->key_len = notesize;
     this->row_len = length;
 
     grid = new QGridLayout(this);
@@ -61,9 +61,10 @@ ToneGrid::~ToneGrid()
         delete this->labelVec[i];
     }
     delete this->grid;
+    delete [] this->key;
 }
 
-void ToneGrid::setKey(const note_t *inkey, size_t insize)
+void ToneGrid::setKey(note_t *inkey, size_t insize)
 {
     key = inkey;
     key_len = insize;
@@ -139,7 +140,7 @@ quint16 ToneGrid::getUsedTrackCount()
 
 quint16 ToneGrid::getBeatLength()
 {
-    for (quint16 i=row_len-1; i>=0; i--) {
+    for (qint32 i=row_len-1; i>=0; i--) {
         if (isColUsed(i)) {
             return i+1;
         }

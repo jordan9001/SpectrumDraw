@@ -12,10 +12,10 @@ class ToneGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ToneGrid(QWidget *parent = 0, quint16 length = 64, const note_t* inkey = C_MAJOR, quint16 insize = C_MAJOR_SIZE);
+    explicit ToneGrid(QWidget *parent = 0, quint16 length = 64, quint16 notesize = 49, qint16 startoffset = -12);
     ~ToneGrid();
 
-    void setKey(const note_t* inkey, size_t insize);
+    void setKey(note_t* inkey, size_t insize);
     QByteArray* generateTrack(quint16 bpm);
     qreal getHighestUsedNote();
     quint16 getUsedTrackCount();
@@ -29,7 +29,7 @@ public slots:
 
 private:
     QGridLayout* grid;
-    const note_t* key;
+    note_t* key;
     quint16 key_len;
     quint16 row_len;
     QVector<QLabel*> labelVec;
