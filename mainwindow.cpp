@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     gram = new Spectrogram(0);
 
     connect(ui->PlayButton,SIGNAL(clicked()),this,SLOT(playTone()));
-    connect(ui->StopButton,SIGNAL(clicked()),this,SLOT(stopPlaying()));
     connect(ui->GraphButton,SIGNAL(clicked()),this,SLOT(drawGraph()));
     connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearGrid()));
     connect(ui->SaveButton,SIGNAL(clicked()),this,SLOT(saveSound()));
@@ -34,45 +33,42 @@ MainWindow::~MainWindow()
 
 void MainWindow::playTone()
 {
-    stopPlaying();
-    // get the combined output
-    QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
-    // get the QByte array from tone generator
-    input = new QBuffer();
-    input->setData(*gen);
+    if (audio != NULL) {
+        audio->stop();
+    } else {
+        ui->PlayButton->setText("Stop");
+        // get the combined output
+        QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
+        // get the QByte array from tone generator
+        input = new QBuffer();
+        input->setData(*gen);
 
-    QAudioFormat format;
-    format.setSampleRate(SPD_SAMPLE_RATE);
-    format.setChannelCount(1);
-    format.setSampleSize(SPD_SAMPLE_SIZE);
-    format.setCodec(SPD_CODEC);
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::SignedInt);
+        QAudioFormat format;
+        format.setSampleRate(SPD_SAMPLE_RATE);
+        format.setChannelCount(1);
+        format.setSampleSize(SPD_SAMPLE_SIZE);
+        format.setCodec(SPD_CODEC);
+        format.setByteOrder(QAudioFormat::LittleEndian);
+        format.setSampleType(QAudioFormat::SignedInt);
 
-    QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-    if (!info.isFormatSupported(format)) {
-       qWarning() << "Raw audio format not supported by backend, cannot play audio.";
-       return;
+        QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+        if (!info.isFormatSupported(format)) {
+           qWarning() << "Raw audio format not supported by backend, cannot play audio.";
+           return;
+        }
+
+        audio = new QAudioOutput(format, this);
+        connect(audio, SIGNAL(stateChanged(QAudio::State)), this, SLOT(handleStateChanged(QAudio::State)));
+
+        input->open(QIODevice::ReadOnly);
+        audio->start(input);
     }
-
-    audio = new QAudioOutput(format, this);
-    connect(audio, SIGNAL(stateChanged(QAudio::State)), this, SLOT(handleStateChanged(QAudio::State)));
-
-    input->open(QIODevice::ReadOnly);
-    audio->start(input);
 }
 
 void MainWindow::drawGraph()
 {
     QByteArray* gen = this->tonegrid->generateTrack(this->bpm);
     this->gram->drawGram(gen, this->bpm, this->tonegrid->getHighestUsedNote());
-}
-
-void MainWindow::stopPlaying()
-{
-    if (audio != NULL) {
-        audio->stop();
-    }
 }
 
 void MainWindow::handleStateChanged(QAudio::State newState)
@@ -96,6 +92,7 @@ void MainWindow::handleStateChanged(QAudio::State newState)
             delete input;
             delete audio;
             audio = NULL;
+            ui->PlayButton->setText("Play");
             break;
 
         default:

@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     spectrogram.cpp \
     tonegrid.cpp \
     wavoutputfile.cpp \
-    audioconstants.cpp
+    audioconstants.cpp \
+    settings.cpp
 
 HEADERS  += mainwindow.h \
     tonegenerator.h \
@@ -25,9 +26,11 @@ HEADERS  += mainwindow.h \
     spectrogram.h \
     styles.h \
     tonegrid.h \
-    wavoutputfile.h
+    wavoutputfile.h \
+    settings.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settings.ui
 
 DISTFILES += \
     README.md

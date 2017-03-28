@@ -45,13 +45,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="StopButton">
-        <property name="text">
-         <string>Stop</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="GraphButton">
         <property name="text">
          <string>Graph</string>
@@ -62,6 +55,13 @@
        <widget class="QPushButton" name="ClearButton">
         <property name="text">
          <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Settings</string>
         </property>
        </widget>
       </item>

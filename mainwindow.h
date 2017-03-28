@@ -39,7 +39,6 @@ private:
 
 private slots:
     void playTone();
-    void stopPlaying();
     void handleStateChanged(QAudio::State newState);
     void drawGraph();
     void clearGrid();
